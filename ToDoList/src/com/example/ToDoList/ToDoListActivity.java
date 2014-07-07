@@ -3,13 +3,12 @@ package com.example.todolist;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 
 public class ToDoListActivity extends Activity implements NewItemFragment.OnNewItemAddedListener {
-    private ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> todoItems;
+    private ToDoItemAdapter arrayAdapter;
+    private ArrayList<ToDoItem> todoItems;
 
     /**
      * Called when the activity is first created.
@@ -22,14 +21,15 @@ public class ToDoListActivity extends Activity implements NewItemFragment.OnNewI
         FragmentManager fragmentManager = getFragmentManager();
         ToDoListFragment todoListFragment = (ToDoListFragment)fragmentManager.findFragmentById(R.id.TodoListFragment);
 
-        todoItems = new ArrayList<String>();
+        todoItems = new ArrayList<ToDoItem>();
         int resID = R.layout.todollist_item;
-        arrayAdapter = new ArrayAdapter<String>(this,resID,todoItems);
+        arrayAdapter = new ToDoItemAdapter(this,resID,todoItems);
         todoListFragment.setListAdapter(arrayAdapter);
     }
 
     public void onNewItemAdded(String newItem) {
-        todoItems.add(newItem);
+        ToDoItem newTodoItem = new ToDoItem(newItem);
+        todoItems.add(0, newTodoItem);
         arrayAdapter.notifyDataSetChanged();
     }
 }
